@@ -1,0 +1,596 @@
+{ 
+    "abi": [
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			}
+		],
+		"name": "createUserProfile",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "_collateralToken",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "_treasury",
+				"type": "address"
+			},
+			{
+				"internalType": "address",
+				"name": "initialOwner",
+				"type": "address"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "owner",
+				"type": "address"
+			}
+		],
+		"name": "OwnableInvalidOwner",
+		"type": "error"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "OwnableUnauthorizedAccount",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "RiskAssessment__CooldownPeriodActive",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "RiskAssessment__InvalidAddress",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "RiskAssessment__InvalidAmount",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "RiskAssessment__InvalidParameters",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "RiskAssessment__ProfileAlreadyExists",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "RiskAssessment__ProfileDoesNotExist",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "RiskAssessment__ProfileNotActive",
+		"type": "error"
+	},
+	{
+		"inputs": [],
+		"name": "RiskAssessment__UnauthorizedCall",
+		"type": "error"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint96",
+				"name": "newScore",
+				"type": "uint96"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint40",
+				"name": "timestamp",
+				"type": "uint40"
+			}
+		],
+		"name": "CreditScoreUpdated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "uint256",
+				"name": "loanId",
+				"type": "uint256"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint40",
+				"name": "timestamp",
+				"type": "uint40"
+			}
+		],
+		"name": "LoanDefaulted",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "previousOwner",
+				"type": "address"
+			},
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "OwnershipTransferred",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "pause",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "Paused",
+		"type": "event"
+	},
+	{
+		"inputs": [],
+		"name": "renounceOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint96",
+				"name": "riskScore",
+				"type": "uint96"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint96",
+				"name": "recommendedRate",
+				"type": "uint96"
+			},
+			{
+				"indexed": false,
+				"internalType": "enum RiskAssessment.RiskLevel",
+				"name": "riskLevel",
+				"type": "uint8"
+			}
+		],
+		"name": "RiskAssessmentPerformed",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint96",
+				"name": "baseCollateralRatio",
+				"type": "uint96"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint96",
+				"name": "maxLoanRatio",
+				"type": "uint96"
+			}
+		],
+		"name": "RiskParametersUpdated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "unpause",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "account",
+				"type": "address"
+			}
+		],
+		"name": "Unpaused",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "bool",
+				"name": "isRepaid",
+				"type": "bool"
+			},
+			{
+				"internalType": "uint96",
+				"name": "loanAmount",
+				"type": "uint96"
+			},
+			{
+				"internalType": "uint256",
+				"name": "loanId",
+				"type": "uint256"
+			}
+		],
+		"name": "updateCreditScore",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint96",
+				"name": "initialScore",
+				"type": "uint96"
+			}
+		],
+		"name": "UserProfileCreated",
+		"type": "event"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "uint40",
+				"name": "timestamp",
+				"type": "uint40"
+			}
+		],
+		"name": "UserProfileDeactivated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "user",
+				"type": "address"
+			},
+			{
+				"internalType": "uint96",
+				"name": "requestedAmount",
+				"type": "uint96"
+			},
+			{
+				"internalType": "uint96",
+				"name": "collateralAmount",
+				"type": "uint96"
+			}
+		],
+		"name": "assessLoanRisk",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint96",
+						"name": "riskScore",
+						"type": "uint96"
+					},
+					{
+						"internalType": "uint96",
+						"name": "recommendedRate",
+						"type": "uint96"
+					},
+					{
+						"internalType": "uint96",
+						"name": "maxLoanAmount",
+						"type": "uint96"
+					},
+					{
+						"internalType": "uint96",
+						"name": "minimumCollateral",
+						"type": "uint96"
+					},
+					{
+						"internalType": "bool",
+						"name": "isEligible",
+						"type": "bool"
+					},
+					{
+						"internalType": "enum RiskAssessment.RiskLevel",
+						"name": "riskLevel",
+						"type": "uint8"
+					}
+				],
+				"internalType": "struct RiskAssessment.LoanRisk",
+				"name": "",
+				"type": "tuple"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "collateralToken",
+		"outputs": [
+			{
+				"internalType": "contract IERC20",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "paused",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "repaymentHistory",
+		"outputs": [
+			{
+				"internalType": "uint40",
+				"name": "",
+				"type": "uint40"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "riskParams",
+		"outputs": [
+			{
+				"internalType": "uint96",
+				"name": "baseCollateralRatio",
+				"type": "uint96"
+			},
+			{
+				"internalType": "uint96",
+				"name": "maxLoanRatio",
+				"type": "uint96"
+			},
+			{
+				"internalType": "uint96",
+				"name": "minCreditScore",
+				"type": "uint96"
+			},
+			{
+				"internalType": "uint32",
+				"name": "riskAdjustmentFactor",
+				"type": "uint32"
+			},
+			{
+				"internalType": "uint32",
+				"name": "cooldownPeriod",
+				"type": "uint32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "treasury",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "userLoanCount",
+		"outputs": [
+			{
+				"internalType": "uint32",
+				"name": "",
+				"type": "uint32"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"name": "userProfiles",
+		"outputs": [
+			{
+				"internalType": "uint96",
+				"name": "creditScore",
+				"type": "uint96"
+			},
+			{
+				"internalType": "uint32",
+				"name": "totalLoans",
+				"type": "uint32"
+			},
+			{
+				"internalType": "uint32",
+				"name": "successfulRepayments",
+				"type": "uint32"
+			},
+			{
+				"internalType": "uint96",
+				"name": "totalVolumeBorrowed",
+				"type": "uint96"
+			},
+			{
+				"internalType": "uint40",
+				"name": "lastUpdateTime",
+				"type": "uint40"
+			},
+			{
+				"internalType": "bool",
+				"name": "hasDefaulted",
+				"type": "bool"
+			},
+			{
+				"internalType": "bool",
+				"name": "isActive",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "version",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"stateMutability": "pure",
+		"type": "function"
+	}
+]
+}
